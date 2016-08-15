@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var path = require('path');
+var checkSong = require('./routes/allInOne');
 
 var songs = []; //stores our songs
 
@@ -15,8 +16,41 @@ app.use(bodyParser.urlencoded({ extended: true }));
  */
 app.post('/songs', function (req, res) {
   var song = req.body;
-  songs.push(song);
-  res.sendStatus(200);
+  console.log(song);
+  var uno = false;
+  var doce = false;
+if(checkSong.checkBlanks(song) == true) {
+    res.sendStatus(400);
+  } else {
+    uno = true;
+  }
+
+
+var dupes = false;
+for(var i = 0; i < songs.length; i++) {
+if(checkSong.checkDupes(song, songs[i])) {
+  dupes = true
+  }
+}
+if (dupes == true){
+  res.sendStatus(400);
+} else {
+  doce = true;
+}
+
+if (uno == true && doce == true){
+      checkSong.addDate(song);
+      songs.push(song);
+      res.sendStatus(201);
+    }
+
+    // var dupes = false;
+    // for(var i = 0; i < songs.length; i++) {
+    //   if(checkSong.checkDupes(song, songs[i])) {
+    //     dupes = true;
+    //   }
+    // }
+
 });
 
 app.get('/songs', function (req, res) {

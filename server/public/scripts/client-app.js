@@ -10,7 +10,7 @@ $(document).ready(function () {
     // iterate over form fields
     // populate our song object with title and artist
     $.each($('#song-form').serializeArray(), function (i, field) {
-      song[field.name] = field.value;
+      song[field.name] = field.value; // what is this?
     });
 
     // check that the data is getting submitted
@@ -27,6 +27,7 @@ $(document).ready(function () {
 
       error: function (response) {
         console.log('Attempted POST /songs, did not work');
+        alert("Please Check Your Entry");
       }
     });
   });
@@ -38,7 +39,7 @@ function getSongs() {
     success: function (songs) {
       $('#song-list').empty();
       songs.forEach(function (song) {
-        $('#song-list').append('<div>' + song.title + '-' + song.artist + '</div>');
+        $('#song-list').append('<div>' + song.title + '-' + song.artist + '-' + song.theDate + '</div>');
       });
     },
 
